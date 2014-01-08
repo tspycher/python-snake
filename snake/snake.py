@@ -41,12 +41,12 @@ class Snake(object):
 
         # Check if snake bits himself
         for e in self._snake:
-            if newElement[0] == e[0] and newElement[1] == e[1]:
+            if newElement == e:
                 raise Exception("Snake bits itself")
 
         self._snake.append(newElement)
         # Check if snake is eating food
-        if newElement[0] == self._gameboard.food[0] and newElement[1] == self._gameboard.food[1]:
+        if newElement == self._gameboard.food:
             self._gameboard.placeFood()
         else:
             self._snake.pop(0)

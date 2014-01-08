@@ -28,9 +28,20 @@ class Gameboard(object):
 
     def draw(self):
         tmp = []
+        # Create top Border
+        for x in xrange(self.boardSize[0]+2):
+            tmp.append("-")
+        tmp.append("\n")
+
+        # Create Gamefield
         for x in xrange(self.boardSize[0]):
+            tmp.append("|")
             for y in xrange(self.boardSize[1]):
                 tmp.append(self.board[x][y])
-            tmp.append("\n")
-        sys.stdout.write("".join(tmp))
+            tmp.append("|\n")
+
+        # Create bottom Border
+        for x in xrange(self.boardSize[0]+2):
+            tmp.append("-")
+        sys.stdout.write("%s\n" % "".join(tmp))
         sys.stdout.flush()
