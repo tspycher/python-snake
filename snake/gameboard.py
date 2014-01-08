@@ -8,8 +8,10 @@ class Gameboard(object):
     board = []
     boardSize = None
     food = None
+    _screen = None
 
-    def __init__(self, size):
+    def __init__(self, size, screen):
+        self._screen = screen
         self.boardSize = size
         self.placeFood()
 
@@ -27,21 +29,7 @@ class Gameboard(object):
         self.food = (random.randint(0, self.boardSize[0]), random.randint(0, self.boardSize[1]))
 
     def draw(self):
-        tmp = []
-        # Create top Border
-        for x in xrange(self.boardSize[0]+2):
-            tmp.append("-")
-        tmp.append("\n")
-
-        # Create Gamefield
         for x in xrange(self.boardSize[0]):
-            tmp.append("|")
             for y in xrange(self.boardSize[1]):
-                tmp.append(self.board[x][y])
-            tmp.append("|\n")
-
-        # Create bottom Border
-        for x in xrange(self.boardSize[0]+2):
-            tmp.append("-")
-        sys.stdout.write("%s\n" % "".join(tmp))
-        sys.stdout.flush()
+                self._screen.addch(x, y, str(self.board[x][y]))
+        self._screen.refresh()

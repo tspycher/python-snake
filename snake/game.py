@@ -1,10 +1,9 @@
 __author__ = 'tspycher'
 
-import time
 from gameboard import Gameboard
 from snake import Snake, SnakeMoveDirection
-import sys
-from select import select
+import curses
+from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN
 
 
 class Game(object):
@@ -12,28 +11,47 @@ class Game(object):
     _gamespeed = 0.6
     _snake = None
     _gameboard = None
+    _screen = None
 
     def __init__(self):
-        self._gameboard = Gameboard((20,20))
+        # Create the screen object
+        curses.initscr()
+        self._screen = curses.newwin(20, 60, 0, 0) #curses.initscr()
+        self._screen.keypad(1)
+        self._screen.nodelay(1)
+        self._screen.timeout(150)
+        #self._screen.border(0)
+
+
+        curses.noecho()
+        curses.cbreak()
+
+        self._gameboard = Gameboard((20, 20), self._screen)
         self._snake = Snake(self._gameboard)
 
     def run(self):
-        while 1:
-            rlist, _, _ = select([sys.stdin], [], [], self._gamespeed)
-            s = None
+        key = KEY_RIGHT
+        try:
+            while 1:
+                event = self._screen.getch()
+                key = key if event == -1 else event
+                s = None
 
-            if rlist:
-                s = sys.stdin.readline()
-                if "w" in s:
+                if key == KEY_UP:
                     s = SnakeMoveDirection.up
-                elif "s" in s:
+                elif key == KEY_DOWN:
                     s = SnakeMoveDirection.down
-                elif "a" in s:
+                elif  key == KEY_LEFT:
                     s = SnakeMoveDirection.left
-                elif "d" in s:
+                elif key == KEY_RIGHT:
                     s = SnakeMoveDirection.right
-            self._snake.move(s)
-            self._gameboard.draw()
+
+                self._snake.move(s)
+                self._gameboard.draw()
+        finally:
+            curses.echo()
+            curses.nocbreak()
+            curses.endwin()
 
 if __name__ == "__main__":
     g = Game()
