@@ -22,6 +22,8 @@ class Snake(object):
             self._snake.append((start, 2+i))
 
     def move(self, direction):
+        self._gameboard.clearBoard()
+
         # Check if we got a new direction
         if direction is not None and direction != self._previousDirection:
             self._previousDirection = direction
@@ -50,7 +52,8 @@ class Snake(object):
             self._gameboard.placeFood()
         else:
             self._snake.pop(0)
-        self._gameboard.clearBoard()
 
         for e in self._snake:
             self._gameboard.board[e[0]][e[1]] = "#"
+
+        self._gameboard.draw()

@@ -16,11 +16,11 @@ class Game(object):
     def __init__(self):
         # Create the screen object
         curses.initscr()
-        self._screen = curses.newwin(20, 60, 0, 0) #curses.initscr()
+        self._screen = curses.newwin(20, 20, 0, 0) #curses.initscr()
         self._screen.keypad(1)
         self._screen.nodelay(1)
         self._screen.timeout(150)
-        #self._screen.border(0)
+        self._screen.border(1)
 
 
         curses.noecho()
